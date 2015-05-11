@@ -1,0 +1,23 @@
+amend
+
+git commit -C HEAD -a –amend 快速修正前一次 commit 的錯誤，只要修 typo 之後打這行，就會替換掉前一次的 commit
+
+reset
+
+git reset 砍掉 commit 重來，但是修改的程式還是留在 working tree。例如：
+
+git reset HEAD^ 就會回到前一版本(一個^表示是前一版)，並把其中的 changes 繼續留在 working tree 中。適合發現前一次 commit 有問題或是想要修改 commit log，可以修改後再重新 commit。
+
+git reset 如果加上 –soft 參數則會把 changes 直接加到 staging area。
+
+加上 –hard 參數表示不留 staging area 也不留 working tree(完全刪除任何修改記錄)，例如：
+
+git reset –hard HEAD^ 則會完全抹掉前一次的 commit。
+
+另個常用的情境是要把修改的檔案從 staging area 移走，指令就是 git reset HEAD filename (但還是留在working tree)。BTW，要回復 working tree 中修改的檔案成本來的樣子，指令是 git checkout filename (重新拿出本來的檔案)
+
+順道一提，如果東西已經 push 出來了，要怎麼回復? 這時候就得用 revert 了。
+
+git revert 會用一個新的 commit 來回復所有的變更(適合已經push出去給別人的情境)。加上 -n 可以不先 commit，這樣可以多 revert 幾次後再一次 commit。
+
+指令會有差別都是因為 remote repo.<-> local repo.<->staging area<->working tree 分了四層移來移去的關係，你只要想清楚這幾層就融會貫通了 (請參考第一集有解釋 staging area 和 working tree)。
